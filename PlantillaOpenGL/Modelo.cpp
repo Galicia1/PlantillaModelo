@@ -5,7 +5,8 @@ Modelo::Modelo() {
 
 }
 
-void Modelo::inicializarVertexArray(GLuint posicionID, GLuint colorID) {
+void Modelo::inicializarVertexArray(GLuint posicionID, GLuint colorID, GLuint transformacionesID) {
+	this-> transformacionesID = transformacionesID;
 	//Crear un vertex array
 	glGenVertexArrays(1, &vertexArrayID);
 	glBindVertexArray(vertexArrayID);
@@ -24,16 +25,19 @@ void Modelo::inicializarVertexArray(GLuint posicionID, GLuint colorID) {
 	glEnableVertexAttribArray(colorID);
 
 	//Especificar a OpenGL como se va a comunicar
-	glVertexAttribPointer(posicionID, 3, GL_FLOAT,
+	glVertexAttribPointer(posicionID, 4, GL_FLOAT,
 		GL_FALSE, sizeof(Vertice), 0);
 	glVertexAttribPointer(colorID, 4, GL_FLOAT,
-		GL_FALSE, sizeof(Vertice), (void*)sizeof(vec3));
+		GL_FALSE, sizeof(Vertice), (void*)sizeof(vec4));
 
 }
 
 void Modelo::dibujar(GLenum modoDibujo) {
 	shader->enlazar();
 	glBindVertexArray(vertexArrayID);
+
+	glUniformMatrix4fv(transformacionesID,1,GL_FALSE,&transformaciones[0][0])
+
 	glDrawArrays(modoDibujo, 0, vertices.size());
 	glBindVertexArray(0);
 	shader->desenlazar();
