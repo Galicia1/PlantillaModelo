@@ -15,7 +15,7 @@ out vec4 fragmentColor;
 void main() {
 	//Es la posicion de salida del vertice
 	//Es del tipo vec4
-	gl_Position.xyz = transformaciones * posicion;
+	gl_Position = transformaciones * posicion;
 
 
 	//Establecer valores de atributos de salida
